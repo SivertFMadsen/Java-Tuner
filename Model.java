@@ -3,7 +3,7 @@ import java.util.HashMap;
 public class Model {
 
     private double tunerOffset;
-    private HashMap<String, Double> hzMap = new HashMap<String, Double>();
+    private HashMap<String, Double> hzMap = new HashMap<>();
 
     public Model(double chamberA) {
         tunerOffset = chamberA - 440.00;
@@ -42,8 +42,23 @@ public class Model {
         return hzMap.get(note);
     }
 
-    protected String findNote(double hz) {
-        return "";
-    }
+    protected HashMap<String, Double> findNote(double hz) {
 
+        String closest = "";
+        double smallestOffset = 100000; 
+        double curOffset; 
+        HashMap<String, Double> closestWithOffset = new HashMap<>();
+
+        for (String note : hzMap.keySet()) {
+            curOffset = Math.abs(hzMap.get(note) - hz);
+            if (smallestOffset > curOffset) {
+                closest = note;
+                smallestOffset = curOffset;
+            }
+        }
+
+        closestWithOffset.put(closest, smallestOffset);
+
+        return closestWithOffset;
+    }
 }

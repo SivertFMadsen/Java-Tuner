@@ -1,3 +1,4 @@
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Tuner {
@@ -8,16 +9,14 @@ public class Tuner {
 
         Scanner sc = new Scanner(System.in);
 
-        String response = "";
+        HashMap<String, Double> response = new HashMap<>();
+        String strResponse = "";
 
         System.out.println("Type note name or 'q' to exit:");
-        response = sc.nextLine();
         
-        while (! response.equals("q")) {
+        while (! strResponse.equals("q")) {
 
-            System.out.println(testModel.findHz(response));
-            System.out.println("Type note name or 'q' to exit:");  
-            response = sc.nextLine();
+            System.out.println("Type hz or 'q' to exit:");  
         }
     }
 }
