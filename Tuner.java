@@ -29,5 +29,7 @@ public class Tuner {
             System.out.println("Type hz or 'q' to exit:");  
             strResponse = sc.nextLine();
         }
+
+        sc.close();
     }
 }
