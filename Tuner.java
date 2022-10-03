@@ -11,12 +11,13 @@ public class Tuner {
         String response = "";
 
         System.out.println("Type note name or 'q' to exit:");
-        do {
-            response = sc.nextLine();
+        response = sc.nextLine();
+        
+        while (! response.equals("q")) {
+
             System.out.println(testModel.findHz(response));
             System.out.println("Type note name or 'q' to exit:");  
-
-        } while (! response.equals("q"));
-
+            response = sc.nextLine();
+        }
     }
 }
