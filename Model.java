@@ -1,3 +1,6 @@
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.HashMap;
 
 public class Model {
@@ -42,22 +45,43 @@ public class Model {
         return hzMap.get(note);
     }
 
-    protected HashMap<String, Double> findNote(double hz) {
+    protected HashMap<String, BigDecimal> findNote(BigDecimal hz) {
 
         String closest = "";
-        double smallestOffset = 100000; 
-        double curOffset; 
-        HashMap<String, Double> closestWithOffset = new HashMap<>();
+        int octave = 4;
+        BigDecimal smallestOffset = new BigDecimal("100000"); 
+        BigDecimal curOffset = new BigDecimal("100000"); 
+        BigDecimal lowerBound = new BigDecimal("245.28");
+        BigDecimal higherBound = new BigDecimal("508.56");
+
+        HashMap<String, BigDecimal> closestWithOffset = new HashMap<>();
+
+        while (hz.compareTo(lowerBound) < 0) {
+            // TODO: create BigDecimal with value 2 as variable
+            hz = hz.multiply(new BigDecimal("2"));
+            octave -= 1;
+        }
+
+        while (hz.compareTo(higherBound) > 0) {
+            hz = hz.divide(new BigDecimal("2"));
+            octave += 1;
+        }
 
         for (String note : hzMap.keySet()) {
-            curOffset = Math.abs(hzMap.get(note) - hz);
-            if (smallestOffset > curOffset) {
+            curOffset = hz.subtract(new BigDecimal(Double.toString(hzMap.get(note)))).abs();
+            
+            if (curOffset.compareTo(smallestOffset) < 0) {
                 closest = note;
                 smallestOffset = curOffset;
             }
         }
 
-        closestWithOffset.put(closest, smallestOffset);
+        // TODO: Return correct offset with regard to octave number
+        // smallestOffset = smallestOffset.multiply(new BigDecimal(octave));
+
+        // TODO: Output offset in cents, not hz
+
+        closestWithOffset.put(closest + octave, smallestOffset.setScale(1, RoundingMode.FLOOR));
 
         return closestWithOffset;
     }
