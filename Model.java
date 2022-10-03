@@ -76,7 +76,11 @@ public class Model {
             }
         }
 
-        // TODO: Return correct offset with regard to octave number
+        if (octave < 4) {
+            smallestOffset = smallestOffset.divide(new BigDecimal(Math.pow(2, 4 - octave)));
+        } else if (octave > 4) {
+            smallestOffset = smallestOffset.multiply(new BigDecimal(Math.pow(2, octave - 4)));
+        }
         // smallestOffset = smallestOffset.multiply(new BigDecimal(octave));
 
         // TODO: Output offset in cents, not hz
